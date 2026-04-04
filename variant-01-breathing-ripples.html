@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterCalm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #FAF7F2;
+        }
+
+        /* Breathing gradient background */
+        .bg {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 50%, #FAF7F2 0%, #F0EBE3 40%, #E8DFD0 80%);
+            animation: breathe 8s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        /* Ripple rings */
+        .ripple-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(180, 165, 145, 0.25);
+            animation: ripple-expand 5s ease-out infinite;
+        }
+        .ripple:nth-child(1) { animation-delay: 0s; }
+        .ripple:nth-child(2) { animation-delay: 1.25s; }
+        .ripple:nth-child(3) { animation-delay: 2.5s; }
+        .ripple:nth-child(4) { animation-delay: 3.75s; }
+        @keyframes ripple-expand {
+            0% { width: 0; height: 0; opacity: 0.5; border-width: 1.5px; }
+            100% { width: 90vmax; height: 90vmax; opacity: 0; border-width: 0.5px; }
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .brand {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 200;
+            letter-spacing: 0.3em;
+            color: #2C2825;
+            overflow: hidden;
+        }
+        .brand span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: letterIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes letterIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tagline {
+            font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+            font-weight: 300;
+            color: #5C564E;
+            margin-top: 1.5rem;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+        }
+        .coming-soon {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #8A8279;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.4s forwards;
+        }
+        .contact {
+            margin-top: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.7s forwards;
+        }
+        .contact a {
+            font-size: 0.85rem;
+            color: #8A8279;
+            text-decoration: none;
+            letter-spacing: 0.03em;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .contact a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #2C2825;
+            transition: width 0.3s ease;
+        }
+        .contact a:hover { color: #2C2825; }
+        .contact a:hover::after { width: 100%; }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="ripple-container">
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+        <div class="ripple"></div>
+    </div>
+    <div class="content">
+        <h1 class="brand" id="brand"></h1>
+        <p class="tagline">Never yell across the house again.</p>
+        <p class="coming-soon">Coming Soon</p>
+        <p class="contact"><a href="mailto:support@getintercalm.com">support@getintercalm.com</a></p>
+    </div>
+    <script>
+        const brand = 'InterCalm';
+        const el = document.getElementById('brand');
+        brand.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.animationDelay = `${i * 0.06}s`;
+            el.appendChild(span);
+        });
+    </script>
+</body>
+</html>

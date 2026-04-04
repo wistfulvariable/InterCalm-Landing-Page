@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterCalm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #FAF7F2;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+            padding: 0 2rem;
+        }
+
+        /* Giant background watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(8rem, 20vw, 18rem);
+            font-weight: 100;
+            letter-spacing: 0.15em;
+            color: rgba(44, 40, 37, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            animation: watermarkBreathe 6s ease-in-out infinite;
+        }
+        @keyframes watermarkBreathe {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.03; }
+            50% { transform: translate(-50%, -50%) scale(1.03); opacity: 0.06; }
+        }
+
+        .brand-wrapper {
+            overflow: hidden;
+            display: inline-block;
+        }
+        .brand {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            color: #2C2825;
+            transform: translateY(100%);
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        }
+
+        .tagline-wrapper {
+            overflow: hidden;
+            margin-top: 0.8rem;
+        }
+        .tagline {
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: 300;
+            color: #6B655B;
+            letter-spacing: 0.08em;
+            transform: translateY(100%);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+        }
+
+        /* Animated underline */
+        .underline {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #B5A994, transparent);
+            margin: 2rem auto;
+            animation: lineExpand 1s ease 1.8s forwards;
+        }
+
+        .bottom-wrapper {
+            overflow: hidden;
+        }
+        .bottom-text {
+            transform: translateY(100%);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+        }
+        .coming-soon {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #A09789;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+        .contact {
+            margin-top: 1rem;
+        }
+        .contact a {
+            font-size: 0.82rem;
+            color: #A09789;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+        }
+        .contact a:hover {
+            color: #2C2825;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); }
+        }
+        @keyframes lineExpand {
+            to { width: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark">InterCalm</div>
+    <div class="content">
+        <div class="brand-wrapper">
+            <h1 class="brand">InterCalm</h1>
+        </div>
+        <div class="tagline-wrapper">
+            <p class="tagline">Never yell across the house again.</p>
+        </div>
+        <div class="underline"></div>
+        <div class="bottom-wrapper">
+            <div class="bottom-text">
+                <p class="coming-soon">Coming Soon</p>
+                <p class="contact"><a href="mailto:support@getintercalm.com">support@getintercalm.com</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

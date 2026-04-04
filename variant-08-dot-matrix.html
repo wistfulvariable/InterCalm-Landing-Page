@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterCalm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #FAF7F2;
+        }
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: radial-gradient(ellipse, rgba(250, 247, 242, 0.95) 0%, rgba(250, 247, 242, 0.7) 60%, transparent 80%);
+            padding: 5rem 4rem;
+            border-radius: 50%;
+        }
+        .brand {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 200;
+            letter-spacing: 0.25em;
+            color: #2C2825;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.5s forwards;
+        }
+        .tagline {
+            font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+            font-weight: 300;
+            color: #6B655B;
+            letter-spacing: 0.04em;
+            margin-top: 1.2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1.3s forwards;
+        }
+        .coming-soon {
+            font-size: 0.72rem;
+            font-weight: 400;
+            color: #A09789;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1.8s forwards;
+        }
+        .contact {
+            margin-top: 0.8rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 2.1s forwards;
+        }
+        .contact a {
+            font-size: 0.8rem;
+            color: #A09789;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact a:hover { color: #2C2825; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <canvas id="dots"></canvas>
+    <div class="content">
+        <h1 class="brand">InterCalm</h1>
+        <p class="tagline">Never yell across the house again.</p>
+        <p class="coming-soon">Coming Soon</p>
+        <p class="contact"><a href="mailto:support@getintercalm.com">support@getintercalm.com</a></p>
+    </div>
+    <script>
+        const canvas = document.getElementById('dots');
+        const ctx = canvas.getContext('2d');
+        let w, h, cols, rows;
+        const SPACING = 28;
+        const BASE_SIZE = 1.5;
+        const ripples = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            cols = Math.ceil(w / SPACING) + 1;
+            rows = Math.ceil(h / SPACING) + 1;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function spawnRipple() {
+            ripples.push({
+                cx: w * (0.2 + Math.random() * 0.6),
+                cy: h * (0.2 + Math.random() * 0.6),
+                radius: 0,
+                maxRadius: Math.max(w, h) * 0.8,
+                speed: 1.5 + Math.random() * 1,
+                strength: 2.5 + Math.random() * 2,
+                born: performance.now(),
+            });
+        }
+
+        setInterval(spawnRipple, 2500);
+        spawnRipple();
+
+        function animate(now) {
+            ctx.clearRect(0, 0, w, h);
+
+            // Remove dead ripples
+            while (ripples.length > 0 && ripples[0].radius > ripples[0].maxRadius) {
+                ripples.shift();
+            }
+
+            // Update ripples
+            ripples.forEach(r => {
+                r.radius += r.speed;
+            });
+
+            // Draw dots
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const x = col * SPACING;
+                    const y = row * SPACING;
+                    let size = BASE_SIZE;
+                    let alpha = 0.12;
+
+                    ripples.forEach(r => {
+                        const dist = Math.hypot(x - r.cx, y - r.cy);
+                        const wave = Math.abs(dist - r.radius);
+                        const bandwidth = 60;
+                        if (wave < bandwidth) {
+                            const intensity = (1 - wave / bandwidth) * Math.max(0, 1 - r.radius / r.maxRadius);
+                            size += r.strength * intensity;
+                            alpha += 0.2 * intensity;
+                        }
+                    });
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180, 165, 140, ${alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterCalm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #F8F4EE;
+        }
+
+        .orb-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        .orb {
+            width: 50vmin;
+            height: 50vmin;
+            border-radius: 50%;
+            position: absolute;
+            filter: blur(80px);
+        }
+        .orb-1 {
+            background: radial-gradient(circle, rgba(220, 200, 170, 0.5), transparent 70%);
+            animation: orbFloat1 10s ease-in-out infinite;
+        }
+        .orb-2 {
+            background: radial-gradient(circle, rgba(200, 185, 160, 0.35), transparent 70%);
+            animation: orbFloat2 12s ease-in-out infinite;
+            width: 40vmin;
+            height: 40vmin;
+        }
+        .orb-3 {
+            background: radial-gradient(circle, rgba(230, 215, 195, 0.3), transparent 70%);
+            animation: orbFloat3 14s ease-in-out infinite;
+            width: 60vmin;
+            height: 60vmin;
+        }
+        @keyframes orbFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(5vw, -3vh) scale(1.1); }
+            66% { transform: translate(-3vw, 4vh) scale(0.95); }
+        }
+        @keyframes orbFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-6vw, 5vh) scale(1.05); }
+            66% { transform: translate(4vw, -2vh) scale(1.1); }
+        }
+        @keyframes orbFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(3vw, 6vh) scale(0.9); }
+            66% { transform: translate(-5vw, -4vh) scale(1.05); }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .brand {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 200;
+            letter-spacing: 0.35em;
+            color: #2C2825;
+            opacity: 0;
+            animation: fadeIn 2s ease 0.3s forwards;
+        }
+        .tagline {
+            font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+            font-weight: 300;
+            color: #6B655B;
+            letter-spacing: 0.04em;
+            margin-top: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 1.2s forwards;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.8s forwards;
+        }
+        .sep-dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: #C8B99A;
+        }
+        .sep-line {
+            width: 30px;
+            height: 1px;
+            background: #D5CABB;
+        }
+        .coming-soon {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #A09789;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 2.1s forwards;
+        }
+        .contact {
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 2.4s forwards;
+        }
+        .contact a {
+            font-size: 0.8rem;
+            color: #A09789;
+            text-decoration: none;
+            transition: color 0.4s;
+        }
+        .contact a:hover { color: #2C2825; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="content">
+        <h1 class="brand">InterCalm</h1>
+        <p class="tagline">Never yell across the house again.</p>
+        <div class="separator">
+            <div class="sep-line"></div>
+            <div class="sep-dot"></div>
+            <div class="sep-line"></div>
+        </div>
+        <p class="coming-soon">Coming Soon</p>
+        <p class="contact"><a href="mailto:support@getintercalm.com">support@getintercalm.com</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterCalm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #FAF7F2;
+        }
+        canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .brand {
+            font-size: clamp(2.8rem, 9vw, 5.5rem);
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            color: #2C2825;
+            opacity: 0;
+            animation: revealBrand 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+        .tagline {
+            font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+            font-weight: 300;
+            color: #6B655B;
+            letter-spacing: 0.06em;
+            margin-top: 1.2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1.2s forwards;
+        }
+        .bottom-block {
+            position: fixed;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 1;
+        }
+        .coming-soon {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: #A09789;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1.6s forwards;
+        }
+        .contact {
+            margin-top: 0.8rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1.9s forwards;
+        }
+        .contact a {
+            font-size: 0.8rem;
+            color: #A09789;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact a:hover { color: #2C2825; }
+        @keyframes revealBrand {
+            from { opacity: 0; letter-spacing: 0.6em; }
+            to { opacity: 1; letter-spacing: 0.2em; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <canvas id="waves"></canvas>
+    <div class="content">
+        <h1 class="brand">InterCalm</h1>
+        <p class="tagline">Never yell across the house again.</p>
+    </div>
+    <div class="bottom-block">
+        <p class="coming-soon">Coming Soon</p>
+        <p class="contact"><a href="mailto:support@getintercalm.com">support@getintercalm.com</a></p>
+    </div>
+    <script>
+        const canvas = document.getElementById('waves');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        const WAVE_COUNT = 5;
+        const waves = Array.from({ length: WAVE_COUNT }, (_, i) => ({
+            amplitude: 25 + i * 8,
+            frequency: 0.003 - i * 0.0003,
+            speed: 0.008 + i * 0.002,
+            phase: i * 0.8,
+            opacity: 0.06 + i * 0.025,
+            yOffset: (i - (WAVE_COUNT - 1) / 2) * 35,
+        }));
+
+        let time = 0;
+
+        function drawWave(wave) {
+            ctx.beginPath();
+            ctx.moveTo(0, h / 2 + wave.yOffset);
+            for (let x = 0; x <= w; x += 2) {
+                const y = h / 2 + wave.yOffset +
+                    Math.sin(x * wave.frequency + time * wave.speed + wave.phase) * wave.amplitude +
+                    Math.sin(x * wave.frequency * 1.5 + time * wave.speed * 0.7) * wave.amplitude * 0.3;
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = `rgba(160, 140, 115, ${wave.opacity})`;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        function animate() {
+            time++;
+            ctx.clearRect(0, 0, w, h);
+            waves.forEach(drawWave);
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
